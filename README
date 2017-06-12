@@ -1,8 +1,6 @@
 pickl simply takes a file as an argument and picks a line:
 
-```
-pickl FILENAME
-```
+Execute by : `pickl FILENAME`
 
 ## Planned updates:
 - Range within file (limited to the size of the file)

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+FILE=${1}
+LINES_MIN=1
+LINES_MAX=$(wc -l $FILE | awk '{print $1}')
+
+LINE=$[($RANDOM % ($LINES_MAX - 1)) + 1]
+
+
+sed "${LINE}q;d" $FILE

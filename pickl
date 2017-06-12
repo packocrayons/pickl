@@ -1,10 +1,40 @@
 #!/bin/bash
 
-FILE=${1}
+OPTIONS='f:n:'
+
+FILE="/dev/stdin"
+ITERATIONS=1;
+
+while getopts $OPTIONS opt
+do
+	case $opt in
+		f)
+			FILE=$OPTARG	
+			;;
+		n)
+			ITERATIONS=$OPTARG
+			;;
+		\?)
+			echo "Invalid option"
+			;;
+		:)
+			echo "Option requires an argument"
+			;;
+		esac
+done
+
 LINES_MIN=1
-LINES_MAX=$(wc -l $FILE | awk '{print $1}')
+LINES=$(cat $FILE)
+LINES_MAX=$(echo "$LINES" | wc -l | awk '{print $1}')
 
-LINE=$[($RANDOM % ($LINES_MAX - 1)) + 1]
+for ((i = 0; i < $ITERATIONS; i++))
+do
+	if (( LINES_MAX == 1 ))
+	then
+		cat $LINES
+		exit -1
+	fi
 
-
-sed "${LINE}q;d" $FILE
+	LINE=$[($RANDOM % ($LINES_MAX - 1)) + 1]
+	echo "$LINES" | sed -e "${LINE}q;d"
+done
